@@ -16,9 +16,9 @@ export const useSkillTestStore = create<SkillTestState>()(
   devtools(
     persist(
       (set) => ({
-        rank: 0,
-        percentile: 0,
-        score: 0,
+        rank: 1,
+        percentile: 30,
+        score: 10,
         chartdata: [
           { x: 0, y: 3 },
           { x: 1, y: 5 },
