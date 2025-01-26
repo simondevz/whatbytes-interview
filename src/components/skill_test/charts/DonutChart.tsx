@@ -3,10 +3,13 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Image from "next/image";
 import { Doughnut } from "react-chartjs-2";
 import target from "@/assets/svg/direct-hit.svg";
+import { useSkillTestStore } from "@/store/SkillTest";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function DonutChart() {
+  const { score } = useSkillTestStore((state) => state);
+
   return (
     <div className="flex w-48 relative">
       <div
@@ -31,7 +34,7 @@ export default function DonutChart() {
           datasets: [
             {
               label: "Question Analysis",
-              data: [15 - 10, 10],
+              data: [15 - score, score],
               backgroundColor: ["#eaf2fe", "#3a7df4"],
               hoverOffset: 4,
               spacing: 0,

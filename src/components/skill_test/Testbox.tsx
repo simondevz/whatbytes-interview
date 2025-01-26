@@ -1,8 +1,12 @@
+"use client";
 import Image from "next/image";
 import { PrimaryBtn } from "../Buttons";
 import htmlLogo from "@/assets/svg/html5-original-wordmark.svg";
+import { useAppStore } from "@/store/app";
 
 export default function TestBox() {
+  const { toggleModal } = useAppStore((state) => state);
+
   return (
     <div className="flex w-full border border-text/15 justify-between rounded-md py-6 px-4 gap-4">
       <div className="flex my-auto min-w-14">
@@ -25,7 +29,7 @@ export default function TestBox() {
       </div>
 
       <div className="flex my-auto">
-        <PrimaryBtn text="Update" />
+        <PrimaryBtn onclick={() => toggleModal()} text="Update" />
       </div>
     </div>
   );

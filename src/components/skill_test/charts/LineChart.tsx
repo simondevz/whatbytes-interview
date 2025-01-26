@@ -1,4 +1,6 @@
 "use client";
+import { useSkillTestStore } from "@/store/SkillTest";
+import { findPercentileScore, getPercentile } from "@/util/percentile";
 import {
   Chart as ChartJS,
   LineElement,
@@ -7,10 +9,10 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
+import React, { useEffect, useRef } from "react";
 
 import { Line } from "react-chartjs-2";
 
-// Register the required components
 ChartJS.register(
   LineElement,
   PointElement,
@@ -20,19 +22,41 @@ ChartJS.register(
 );
 
 export default function LineChart() {
+  const percentileValue = useSkillTestStore((state) => state.percentile);
+  const chartData = useSkillTestStore((state) => state.chartdata);
+  const chartRef = useRef<any>(null);
+
+  // Use useEffect to programmatically trigger tooltip after component mounts
+  useEffect(() => {
+    if (chartRef.current) {
+      const chart = chartRef.current;
+
+      // Find the index of the percentile value in the dataset
+      const percentileIndex = findPercentileScore(chartData, percentileValue);
+
+      // Trigger a tooltip on that specific index (percentile)
+      chart?.tooltip?.setActiveElements(
+        [{ datasetIndex: 0, index: percentileIndex }],
+        { x: percentileValue, y: percentileValue }
+      );
+      chart?.update(); // Re-render the chart with the active tooltip
+    }
+  }, [percentileValue]);
+
   return (
-    <div>
+    <div className="flex w-full">
       <Line
+        ref={chartRef}
         data={{
-          labels: Array.from({ length: 11 }, (_, i) => i * 10), // X-axis: Percentiles (0 to 100)
+          labels: Array.from({ length: 16 }, (_, i) => i), // X-axis: Percentiles (0 to 100)
           datasets: [
             {
               label: "Distribution Curve",
-              data: [2, 5, 8, 15, 25, 40, 25, 15, 8, 5, 2], // Example frequency data
-              borderColor: "rgba(75, 192, 192, 1)", // Line color
-              backgroundColor: "rgba(75, 192, 192, 0.2)", // Fill color under the curve
-              pointRadius: 5, // Size of points on the curve
-              tension: 0.4, // Smooth the line
+              data: chartData,
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              pointRadius: 5,
+              tension: 0.4,
             },
           ],
         }}
@@ -40,15 +64,30 @@ export default function LineChart() {
           responsive: true,
           plugins: {
             legend: { display: false }, // Remove legend
-            tooltip: { enabled: true }, // Enable tooltips
+            tooltip: {
+              callbacks: {
+                // Custom tooltip title
+                title: (tooltipItems) => {
+                  const xValue = tooltipItems[0].label;
+                  return `${Math.round(
+                    getPercentile(chartData, Number(xValue) || 0)
+                  )} Percentile, Score ${xValue}`;
+                },
+                // Custom tooltip label
+                label: (tooltipItem) => {
+                  const yValue = (tooltipItem?.raw as any)?.y;
+                  return `Number of Students: ${yValue}`;
+                },
+              },
+            }, // Enable tooltips
           },
           scales: {
             x: {
-              title: { display: true, text: "Percentiles" },
+              title: { display: true, text: "Score" },
             },
             y: {
               display: false,
-              title: { display: false, text: "Number of Students" },
+              title: { display: true, text: "Number of Students" },
             },
           },
           elements: {

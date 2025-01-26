@@ -1,10 +1,14 @@
+"use client";
 import React from "react";
 import tropy from "@/assets/svg/trophy.svg";
 import clipboard from "@/assets/svg/clipboard.svg";
 import checkbox from "@/assets/svg/check-button-green.svg";
 import Image from "next/image";
+import { useSkillTestStore } from "@/store/SkillTest";
 
 export default function QuickStat() {
+  const { rank, percentile, score } = useSkillTestStore((state) => state);
+
   const StatBox = ({
     image,
     statFigure,
@@ -39,9 +43,17 @@ export default function QuickStat() {
 
       <div className="flex justify-between mx-auto max-md:mx-0 gap-4 max-md:gap-6 max-md:flex-col">
         {[
-          { image: tropy, statFigure: "1", text: "Your rank" },
-          { image: clipboard, statFigure: "30%", text: "percentile" },
-          { image: checkbox, statFigure: "10 / 15", text: "Correct answers" },
+          { image: tropy, statFigure: rank.toString(), text: "Your rank" },
+          {
+            image: clipboard,
+            statFigure: percentile.toString() + "%",
+            text: "percentile",
+          },
+          {
+            image: checkbox,
+            statFigure: score.toString() + " / 15",
+            text: "Correct answers",
+          },
         ].map((stat, index) => (
           <React.Fragment key={index}>
             {index === 0 ? (
