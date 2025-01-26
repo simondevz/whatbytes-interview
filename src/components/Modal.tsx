@@ -32,7 +32,7 @@ export default function Modal({
     <div
       className={
         (open ? "flex " : "hidden ") +
-        " w-screen h-screen absolute top-0 left-0 juatify-center bg-black/70"
+        " w-screen h-screen fixed top-0 left-0 juatify-center bg-black/70"
       }
     >
       <div className="flex mx-auto my-auto bg-white rounded-lg flex-col gap-4 p-5 ">

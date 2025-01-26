@@ -10,7 +10,7 @@ import { useAppStore } from "@/store/app";
 export default function SkillTest() {
   const { openModal, toggleModal } = useAppStore((state) => state);
   return (
-    <section className="flex w-full flex-col gap-4 pt-6 px-10 ">
+    <section className="flex w-full flex-col gap-4 pt-6 px-10 max-sm:px-4 max-sm:pt-4 ">
       <div className="flex w-full ">
         <h2 className="flex text-text">Skill Test</h2>
       </div>

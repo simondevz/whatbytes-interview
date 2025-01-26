@@ -9,39 +9,13 @@ import { useSkillTestStore } from "@/store/SkillTest";
 export default function QuickStat() {
   const { rank, percentile, score } = useSkillTestStore((state) => state);
 
-  const StatBox = ({
-    image,
-    statFigure,
-    text,
-  }: {
-    image: any;
-    statFigure: string;
-    text: string;
-  }) => {
-    return (
-      <div className="flex gap-2 my-auto">
-        <div className="p-3 rounded-full bg-text/5 flex justify-center my-auto">
-          <Image
-            src={image}
-            className="w-6 my-auto object-fit h-6"
-            alt={text}
-          />
-        </div>
-        <div className="flex flex-col justify-between">
-          <span className="font-bold">{statFigure}</span>
-          <span className="text-text text-[0.875em] uppercase">{text}</span>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="flex w-full flex-col border border-text/15 rounded-md py-3 px-4 gap-1 max-md:gap-3">
       <div className="flex w-full">
         <h3 className="font-bold text-[0.875em]">Quick Statistics</h3>
       </div>
 
-      <div className="flex justify-between mx-auto max-md:mx-0 gap-4 max-md:gap-6 max-md:flex-col">
+      <div className="flex justify-between mx-auto max-md:mx-0 gap-4 max-md:gap-6 max-md:flex-col max-lg:flex-wrap">
         {[
           { image: tropy, statFigure: rank.toString(), text: "Your rank" },
           {
@@ -68,3 +42,25 @@ export default function QuickStat() {
     </div>
   );
 }
+
+const StatBox = ({
+  image,
+  statFigure,
+  text,
+}: {
+  image: any;
+  statFigure: string;
+  text: string;
+}) => {
+  return (
+    <div className="flex gap-2 my-auto">
+      <div className="p-3 rounded-full bg-text/5 flex justify-center my-auto">
+        <Image src={image} className="w-6 my-auto object-fit h-6" alt={text} />
+      </div>
+      <div className="flex flex-col justify-between">
+        <span className="font-bold">{statFigure}</span>
+        <span className="text-text text-[0.875em] uppercase">{text}</span>
+      </div>
+    </div>
+  );
+};

@@ -48,7 +48,7 @@ export default function LineChart() {
       <Line
         ref={chartRef}
         data={{
-          labels: Array.from({ length: 16 }, (_, i) => i), // X-axis: Percentiles (0 to 100)
+          labels: Array.from({ length: 16 }, (_, i) => i),
           datasets: [
             {
               label: "Distribution Curve",
